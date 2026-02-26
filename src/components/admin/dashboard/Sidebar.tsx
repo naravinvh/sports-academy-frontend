@@ -21,7 +21,7 @@ const menu = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const router = useRouter() // ✅ ถูกต้อง
+  const router = useRouter()
 
   return (
     <aside className="w-64 bg-white border-r flex flex-col">
@@ -33,15 +33,17 @@ export function Sidebar() {
       {/* Menu */}
       <nav className="flex-1 px-3 space-y-1">
         {menu.map((item) => {
-          const active = pathname === item.href
+          const active =
+            pathname === item.href ||
+            pathname.startsWith(item.href + "/")
 
           return (
             <Link
               key={item.label}
               href={item.href}
               className={`
-                flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium
-                transition
+                flex items-center gap-3 px-3 py-2 rounded-md
+                text-sm font-medium transition
                 ${
                   active
                     ? "bg-blue-50 text-blue-900"
@@ -61,7 +63,7 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="border-t p-4 space-y-2">
+      <div className="border-t p-4">
         <button
           onClick={() => router.push("/login")}
           className="

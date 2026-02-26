@@ -33,8 +33,13 @@ export function MonthlyRevenueChart() {
   return (
     <div className="bg-white rounded-xl p-6 shadow">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-blue-900">
-          Monthly Revenue, Expense & Profit
+        <h3 className="text-lg font-semibold">
+          <span className="text-black">Monthly </span>
+          <span className="text-blue-600">Revenue</span>
+          <span className="text-slate-800">, </span>
+          <span className="text-rose-500">Expense</span>
+          <span className="text-slate-800"> and </span>
+          <span className="text-yellow-500">Profit</span>
         </h3>
         <p className="text-sm text-slate-500">
           Overview of financial performance
@@ -55,9 +60,17 @@ export function MonthlyRevenueChart() {
             />
 
             <Tooltip
-              formatter={(value: number) =>
-                `฿${value.toLocaleString()}`
-              }
+              contentStyle={{
+                backgroundColor: "#fff",
+                border: "1px solid #e2e8f0",
+                borderRadius: 8,
+              }}
+              formatter={(value, name) => {
+                if (name === "Profit") {
+                  return `฿${value}`
+                }
+                return `฿${(value as number) / 1000}k`
+              }}
             />
 
             <Legend />
@@ -83,7 +96,7 @@ export function MonthlyRevenueChart() {
               type="monotone"
               dataKey="profit"
               name="Profit"
-              stroke="#16a34a" // Green
+              stroke="#ffd500ff" // Green
               strokeWidth={3}
               dot={{ r: 4 }}
               activeDot={{ r: 6 }}

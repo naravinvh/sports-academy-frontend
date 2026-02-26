@@ -3,11 +3,15 @@
 type VerifySlipModalProps = {
   open: boolean
   onClose: () => void
+  onApprove: () => void
+  slipUrl?: string
 }
 
 export default function VerifySlipModal({
   open,
   onClose,
+  onApprove,
+  slipUrl,
 }: VerifySlipModalProps) {
   if (!open) return null
 
@@ -27,8 +31,18 @@ export default function VerifySlipModal({
         {/* Content */}
         <div className="px-6 py-4 space-y-4">
           {/* Slip Preview */}
-          <div className="h-40 rounded-lg border-2 border-dashed border-blue-200 bg-blue-50 flex items-center justify-center text-sm text-blue-600">
-            Slip Preview
+          <div className="h-40 rounded-lg border-2 border-dashed border-blue-200 bg-blue-50 flex items-center justify-center overflow-hidden">
+            {slipUrl ? (
+              <img
+                src={slipUrl}
+                alt="Slip"
+                className="h-full object-contain"
+              />
+            ) : (
+              <span className="text-sm text-blue-600">
+                Slip Preview
+              </span>
+            )}
           </div>
         </div>
 
@@ -42,7 +56,7 @@ export default function VerifySlipModal({
           </button>
 
           <button
-            onClick={onClose}
+            onClick={onApprove}
             className="px-5 py-2 text-sm rounded-md bg-green-600 text-white hover:bg-green-700"
           >
             Approve
