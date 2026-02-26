@@ -37,7 +37,6 @@ export function AddUserModal({
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
       <div className="bg-white w-full max-w-md rounded-xl shadow-xl text-blue-900">
-        {/* Header */}
         <div className="px-6 py-4 border-b">
           <h2 className="text-lg font-semibold">
             Add New User

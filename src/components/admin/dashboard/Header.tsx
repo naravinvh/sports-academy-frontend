@@ -4,7 +4,7 @@ import { Bell } from "lucide-react"
 import Link from "next/link"
 
 export default function Header() {
-  const pendingCount = 2 // 🔴 ตอนนี้ hardcode ก่อน (ต่อ API ทีหลัง)
+  const pendingCount = 2 
 
   return (
     <div className="flex items-center justify-between">
