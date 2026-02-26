@@ -13,7 +13,7 @@ export default function CoachesPage() {
       id: 1,
       name: "Coach A",
       email: "coachA@mail.com",
-      expertise: ["Quant", "Crypto"],
+      expertise: ["Badminton"],
       status: "active",
       totalCourses: 3,
     },

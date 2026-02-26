@@ -38,9 +38,9 @@ export function CoachTable({
           <tbody>
             {coaches.map((c) => (
               <tr key={c.id} className="border-b hover:bg-gray-50">
-                <td className="p-4 font-medium">{c.name}</td>
-                <td className="p-4">{c.expertise.join(", ")}</td>
-                <td className="p-4">{c.totalCourses}</td>
+                <td className="p-4 font-medium text-blue-900">{c.name}</td>
+                <td className="p-4 text-blue-900">{c.expertise.join(", ")}</td>
+                <td className="p-4 text-blue-900">{c.totalCourses}</td>
                 <td className="p-4">
                   <span
                     className={`px-3 py-1 rounded-full text-xs ${

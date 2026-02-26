@@ -30,10 +30,15 @@ export function DeleteCoachModal({
         </div>
 
         <div className="px-6 py-4 border-t flex justify-end gap-2">
-          <button onClick={onClose}>Cancel</button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 border rounded-md bg-blue-600 text-white"
+          >
+            Cancel
+          </button>
           <button
             onClick={onConfirm}
-            className="bg-red-600 text-white px-4 py-2 rounded"
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
           >
             Deactivate
           </button>

@@ -13,7 +13,7 @@ export function CoachHistoryModal({ open, coach, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-xl">
+      <div className="bg-white w-full max-w-md rounded-xl shadow-xl text-black">
         <div className="px-6 py-4 border-b font-semibold">
           Teaching History
         </div>
