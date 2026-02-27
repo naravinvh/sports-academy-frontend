@@ -19,9 +19,20 @@ export function AddCourseModal({ open, onClose, onAdd }: Props) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [coach, setCoach] = useState("")
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState<string>("")
   const [status, setStatus] = useState<CourseStatus>("draft")
 
+  const handleSave = () => {
+  onAdd({
+    title,
+    description,
+    coach,
+    price: Number(price || 0), // ✅ logic อยู่ตรงนี้
+    status,
+  })
+
+  onClose()
+}
   if (!open) return null
 
   return (
@@ -34,21 +45,21 @@ export function AddCourseModal({ open, onClose, onAdd }: Props) {
         <div className="px-6 py-4 space-y-4">
           <input
             placeholder="Course title"
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border px-3 py-2 rounded text-gray-400"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
           <textarea
             placeholder="Description"
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border px-3 py-2 rounded text-gray-400"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
 
           <input
             placeholder="Coach"
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border px-3 py-2 rounded text-gray-400"
             value={coach}
             onChange={(e) => setCoach(e.target.value)}
           />
@@ -58,11 +69,12 @@ export function AddCourseModal({ open, onClose, onAdd }: Props) {
             placeholder="Price"
             className="w-full border px-3 py-2 rounded text-blue-900"
             value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            onChange={(e) => setPrice(e.target.value)}
+            min={0}
           />
 
           <select
-            className="w-full border px-3 py-2 rounded text-blue-900"
+            className="w-full border px-3 py-2 rounded text-gray-400"
             value={status}
             onChange={(e) =>
               setStatus(e.target.value as CourseStatus)
@@ -74,14 +86,8 @@ export function AddCourseModal({ open, onClose, onAdd }: Props) {
         </div>
 
         <div className="px-6 py-4 border-t flex justify-end gap-2">
-          <button onClick={onClose}>Cancel</button>
-          <button
-            onClick={() => {
-              onAdd({ title, description, coach, price, status })
-              onClose()
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
+          <button onClick={onClose} className="text-blue-900 bg-gray-100 px-4 py-2 rounded">Cancel</button>
+          <button onClick={handleSave} className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer text-gray-400">
             Save
           </button>
         </div>

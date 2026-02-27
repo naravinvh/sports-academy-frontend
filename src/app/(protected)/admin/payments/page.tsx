@@ -79,9 +79,9 @@ export default function PaymentsPage() {
 
       {/* 🔔 Pending Payments */}
 {pendingPayments.length > 0 && (
-  <div className="bg-white rounded-xl p-5 shadow-sm border">
+  <div className="bg-white rounded-xl p-5 shadow-sm border bg-red-50">
     <div className="flex items-center justify-between mb-4">
-      <h2 className="text-lg font-semibold text-blue-900">
+      <h2 className="text-lg font-semibold text-red-500">
         Pending Payments
       </h2>
 

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { CourseTable, Course } from "@/components/admin/courses/CourseTable"
 import { AddCourseModal } from "@/components/admin/courses/AddCourseModal"
+import { CourseCard } from "@/components/admin/courses/CourseCard"
 
 export default function CoursesPage() {
   const [openAdd, setOpenAdd] = useState(false)
@@ -19,10 +20,11 @@ export default function CoursesPage() {
   ])
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-8">
+      {/* ===== Header เดิม ===== */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-blue-900 text">
+          <h1 className="text-2xl font-bold text-blue-900">
             Course Management
           </h1>
           <p className="text-sm text-gray-500">
@@ -38,6 +40,7 @@ export default function CoursesPage() {
         </button>
       </div>
 
+      {/* ===== Table เดิม (ยังอยู่) ===== */}
       <CourseTable
         courses={courses}
         onUpdate={(updated) =>
@@ -50,6 +53,23 @@ export default function CoursesPage() {
         }
       />
 
+            {/* ===== Classroom Card View (เพิ่มเข้ามา) ===== */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4 text-yellow-500">
+          Classroom view
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {courses.map((course) => (
+            <CourseCard
+              key={course.id}
+              course={course}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ===== Modal ===== */}
       <AddCourseModal
         open={openAdd}
         onClose={() => setOpenAdd(false)}

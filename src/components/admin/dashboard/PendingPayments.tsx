@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
 type Props = {
   name: string
@@ -16,10 +17,20 @@ export function PendingPaymentItem({
   onReview,
 }: Props) {
   return (
-    <div className="flex justify-between items-center rounded-lg border bg-white p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.01 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="flex justify-between items-center rounded-lg border bg-white p-4 "
+    >
       {/* Left */}
       <div className="flex items-start gap-3">
-        <span className="mt-2 h-2 w-2 rounded-full bg-red-500" />
+        <motion.span
+          animate={{ scale: [1, 1.4, 1] }}
+          transition={{ repeat: Infinity, duration: 1.2 }}
+          className="mt-2 h-2 w-2 rounded-full bg-red-500"
+        />
         <div>
           <p className="font-medium text-gray-900">{name}</p>
           <p className="text-sm text-gray-500">{course}</p>
@@ -29,7 +40,7 @@ export function PendingPaymentItem({
       {/* Right */}
       <div className="flex items-center gap-4">
         <p className="text-sm font-semibold text-blue-700">
-          ฿{Number(amount || 0).toLocaleString()}
+          ฿{amount.toLocaleString()}
         </p>
 
         <Button
@@ -39,6 +50,6 @@ export function PendingPaymentItem({
           View
         </Button>
       </div>
-    </div>
+    </motion.div>
   )
 }
