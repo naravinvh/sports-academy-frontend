@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { PendingPaymentItem } from "@/components/admin/payment/PendingPayments"
 import VerifySlipModal from "@/components/admin/payment/VerifySlipModal"
-import AddPaymentModal from "@/components/admin/payment/AddPaymentModal"
 import AddFinanceModal from "@/components/admin/payment/AddFinanceModal"
 
 /* ---------------- TYPES ---------------- */
@@ -20,10 +19,13 @@ type Payment = {
   approvedAt?: string
 }
 
-type MonthlyFinance = {
-  month: string // YYYY-MM
-  revenue: number
-  expense: number
+type FinanceItem = {
+  id: number
+  date: string
+  name: string
+  description: string
+  amount: number
+  type: "revenue" | "expense"
 }
 
 /* ---------------- PAGE ---------------- */
@@ -52,49 +54,29 @@ export default function PaymentsPage() {
 
   const [selected, setSelected] = useState<Payment | null>(null)
   const [openAdd, setOpenAdd] = useState(false)
+  const [openFinance, setOpenFinance] =
+    useState<null | "revenue" | "expense">(null)
 
-  /* -------- Monthly Finance -------- */
+  /* -------- Finance Items (NEW) -------- */
 
-  const [monthlyFinance, setMonthlyFinance] = useState<MonthlyFinance[]>([
-    { month: "2025-01", revenue: 0, expense: 120000 },
-    { month: "2025-02", revenue: 0, expense: 135000 },
+  const [financeItems, setFinanceItems] = useState<FinanceItem[]>([
+    {
+      id: 1,
+      date: "2026-02-01",
+      name: "Course Payment",
+      description: "Badminton course",
+      amount: 4900,
+      type: "revenue",
+    },
+    {
+      id: 2,
+      date: "2026-02-05",
+      name: "Coach Salary",
+      description: "February salary",
+      amount: 120000,
+      type: "expense",
+    },
   ])
-
-  /* -------- Helpers -------- */
-
-  const getCurrentMonth = () =>
-    new Date().toISOString().slice(0, 7)
-
-  const updateMonthlyFinance = (
-    type: "revenue" | "expense",
-    amount: number
-  ) => {
-    const monthKey = getCurrentMonth()
-
-    setMonthlyFinance((prev) => {
-      const found = prev.find((m) => m.month === monthKey)
-
-      if (found) {
-        return prev.map((m) =>
-          m.month === monthKey
-            ? {
-                ...m,
-                [type]: m[type] + amount,
-              }
-            : m
-        )
-      }
-
-      return [
-        ...prev,
-        {
-          month: monthKey,
-          revenue: type === "revenue" ? amount : 0,
-          expense: type === "expense" ? amount : 0,
-        },
-      ]
-    })
-  }
 
   /* -------- Approve Payment -------- */
 
@@ -102,7 +84,6 @@ export default function PaymentsPage() {
     if (!selected) return
 
     const approvedDate = new Date()
-    const monthKey = approvedDate.toISOString().slice(0, 7)
 
     setPayments((prev) =>
       prev.map((p) =>
@@ -116,7 +97,19 @@ export default function PaymentsPage() {
       )
     )
 
-    updateMonthlyFinance("revenue", selected.amount)
+    // auto add revenue record
+    setFinanceItems((prev) => [
+      ...prev,
+      {
+        id: prev.length + 1,
+        date: approvedDate.toISOString().slice(0, 10),
+        name: "Course Payment",
+        description: selected.course,
+        amount: selected.amount,
+        type: "revenue",
+      },
+    ])
+
     setSelected(null)
   }
 
@@ -140,18 +133,24 @@ export default function PaymentsPage() {
 
   /* -------- Manual Revenue / Expense -------- */
 
-  const handleAddRevenue = () => {
-    const value = prompt("Enter revenue amount")
-    const amount = Number(value)
-    if (!amount || amount <= 0) return
-    updateMonthlyFinance("revenue", amount)
-  }
+  const handleFinanceSubmit = (data: {
+    date: string
+    name: string
+    description: string
+    amount: number
+  }) => {
+    if (!openFinance) return
 
-  const handleAddExpense = () => {
-    const value = prompt("Enter expense amount")
-    const amount = Number(value)
-    if (!amount || amount <= 0) return
-    updateMonthlyFinance("expense", amount)
+    setFinanceItems((prev) => [
+      ...prev,
+      {
+        id: prev.length + 1,
+        ...data,
+        type: openFinance,
+      },
+    ])
+
+    setOpenFinance(null)
   }
 
   /* -------- Filters -------- */
@@ -164,6 +163,25 @@ export default function PaymentsPage() {
     (p) => p.status === "approved"
   )
 
+  /* -------- Monthly Summary -------- */
+
+  const monthlySummary = Object.values(
+    financeItems.reduce((acc, item) => {
+      const month = item.date.slice(0, 7)
+
+      if (!acc[month]) {
+        acc[month] = {
+          month,
+          revenue: 0,
+          expense: 0,
+        }
+      }
+
+      acc[month][item.type] += item.amount
+      return acc
+    }, {} as Record<string, { month: string; revenue: number; expense: number }>)
+  )
+
   /* ---------------- UI ---------------- */
 
   return (
@@ -172,19 +190,12 @@ export default function PaymentsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-blue-900">
-            Payments
+            Payments and Finance
           </h1>
           <p className="text-sm text-gray-500">
-            Review and manage payment transactions
+            Review payment transactions and finance records
           </p>
         </div>
-
-        <button
-          onClick={() => setOpenAdd(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-        >
-          + Add Payment
-        </button>
       </div>
 
       {/* 🔔 Pending Payments */}
@@ -216,84 +227,126 @@ export default function PaymentsPage() {
 
       {/* 📜 Transaction History */}
       <div className="bg-white rounded-xl p-5 shadow-sm border">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-blue-900">
-            Transaction History
-          </h2>
-        </div>
+        <h2 className="text-lg font-semibold text-blue-900 mb-4">
+          Transaction History
+        </h2>
 
-          
         {history.length === 0 ? (
           <p className="text-sm text-gray-500">
             No transactions yet
           </p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-500 border-b">
-                  <th className="py-3">Name</th>
-                  <th>Course</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                  <th>Status</th>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-gray-500 border-b">
+                <th className="py-3">Name</th>
+                <th>Course</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {history.map((p) => (
+                <tr key={p.id} className="border-b">
+                  <td className="py-3 font-medium text-blue-900">
+                    {p.name}
+                  </td>
+                  <td>{p.course}</td>
+                  <td className="text-emerald-600 font-semibold">
+                    ฿{p.amount.toLocaleString()}
+                  </td>
+                  <td className="text-gray-500">
+                    {new Date(p.approvedAt!).toLocaleDateString()}
+                  </td>
+                  <td>
+                    <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">
+                      Approved
+                    </span>
+                  </td>
                 </tr>
-              </thead>
-
-              <tbody>
-                {history.map((p) => (
-                  <tr
-                    key={p.id}
-                    className="border-b last:border-0 hover:bg-gray-50"
-                  >
-                    <td className="py-3 font-medium text-blue-900">
-                      {p.name}
-                    </td>
-                    <td>{p.course}</td>
-                    <td className="font-semibold text-emerald-600">
-                      ฿{p.amount.toLocaleString()}
-                    </td>
-                    <td className="text-gray-500">
-                      {new Date(p.approvedAt!).toLocaleDateString()}
-                    </td>
-                    <td>
-                      <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">
-                        Approved
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
 
-      {/* 📊 Monthly Revenue & Expense */}
-      <div className="bg-white rounded-xl p-5 shadow-sm border">
-        {/* Header + Actions */}
-        <div className="flex items-center justify-between mb-4">
+      {/* 📊 Revenue & Expense (DETAIL) */}
+      <div className="bg-white rounded-xl p-5 shadow-sm border space-y-6">
+        <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-blue-900">
-            Monthly Revenue & Expense
+            Revenue & Expense Records
           </h2>
 
           <div className="flex gap-2">
             <button
-              onClick={handleAddRevenue}
-              className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm hover:bg-emerald-700"
+              onClick={() => setOpenFinance("revenue")}
+              className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm"
             >
               + Revenue
             </button>
             <button
-              onClick={handleAddExpense}
-              className="px-3 py-1.5 rounded-md bg-red-600 text-white text-sm hover:bg-red-700"
+              onClick={() => setOpenFinance("expense")}
+              className="px-3 py-1.5 rounded-md bg-red-600 text-white text-sm"
             >
               + Expense
             </button>
           </div>
         </div>
 
-        {/* Table */}
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-left text-gray-500 border-b">
+              <th className="py-3">Date</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th className="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {financeItems.map((f) => (
+              <tr key={f.id} className="border-b">
+                <td className="py-3 text-blue-900">{f.date}</td>
+                <td className="font-medium text-blue-900">
+                  {f.name}
+                </td>
+                <td className="text-gray-500">
+                  {f.description}
+                </td>
+                <td>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full ${
+                      f.type === "revenue"
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {f.type}
+                  </span>
+                </td>
+                <td
+                  className={`text-right font-semibold ${
+                    f.type === "revenue"
+                      ? "text-emerald-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {f.type === "revenue" ? "+" : "-"}฿
+                  {f.amount.toLocaleString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 📈 Monthly Summary */}
+      <div className="bg-white rounded-xl p-5 shadow-sm border">
+        <h3 className="text-md font-semibold text-blue-900 mb-4">
+          Monthly Summary
+        </h3>
+
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-gray-500 border-b">
@@ -303,12 +356,11 @@ export default function PaymentsPage() {
               <th>Profit</th>
             </tr>
           </thead>
-
           <tbody>
-            {monthlyFinance.map((m) => {
+            {monthlySummary.map((m) => {
               const profit = m.revenue - m.expense
               return (
-                <tr key={m.month} className="border-b last:border-0">
+                <tr key={m.month} className="border-b">
                   <td className="py-3 font-medium text-blue-900">
                     {m.month}
                   </td>
@@ -343,11 +395,12 @@ export default function PaymentsPage() {
         slipUrl={selected?.slipUrl}
       />
 
-      {/* ➕ Add Payment Modal */}
-      <AddPaymentModal
-        open={openAdd}
-        onClose={() => setOpenAdd(false)}
-        onAdd={handleAddPayment}
+      {/* ➕ Add Revenue / Expense Modal */}
+      <AddFinanceModal
+        open={openFinance !== null}
+        type={openFinance!}
+        onClose={() => setOpenFinance(null)}
+        onSubmit={handleFinanceSubmit}
       />
     </div>
   )

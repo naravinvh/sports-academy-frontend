@@ -16,7 +16,7 @@ const menu = [
   { label: "Users", icon: Users, href: "/admin/users" },
   { label: "Courses", icon: Book, href: "/admin/courses" },
   { label: "Coach", icon: User, href: "/admin/coach" },
-  { label: "Payments", icon: CreditCard, href: "/admin/payments" },
+  { label: "Payments and Finance", icon: CreditCard, href: "/admin/payments" },
 ]
 
 export function Sidebar() {

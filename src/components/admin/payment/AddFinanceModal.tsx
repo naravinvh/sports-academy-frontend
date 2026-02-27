@@ -63,7 +63,7 @@ export default function AddFinanceModal({
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm"
+            className="w-full border rounded-md px-3 py-2 text-sm text-gray-500"
           />
 
           <input
@@ -71,7 +71,7 @@ export default function AddFinanceModal({
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm"
+            className="w-full border rounded-md px-3 py-2 text-sm text-gray-500"
           />
 
           <input
@@ -79,7 +79,7 @@ export default function AddFinanceModal({
             placeholder="Description (optional)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm"
+            className="w-full border rounded-md px-3 py-2 text-sm text-gray-500"
           />
 
           <input
@@ -87,14 +87,14 @@ export default function AddFinanceModal({
             placeholder="Amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm"
+            className="w-full border rounded-md px-3 py-2 text-sm text-gray-500"
           />
         </div>
 
         <div className="flex justify-end gap-2 pt-4">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm rounded-md border"
+            className="px-4 py-2 text-sm rounded-md border text-blue-500"
           >
             Cancel
           </button>
