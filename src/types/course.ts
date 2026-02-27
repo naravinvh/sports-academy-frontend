@@ -1,4 +1,5 @@
 export type CourseStatus = "draft" | "published"
+export type CourseLevel = "Beginner" | "Advanced"
 
 export type Course = {
   id: number
@@ -7,4 +8,6 @@ export type Course = {
   coach: string
   price: number
   status: CourseStatus
+  level?: CourseLevel
+  
 }

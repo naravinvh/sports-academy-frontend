@@ -1,34 +1,72 @@
 "use client"
 
 import { useState } from "react"
-import { CourseTable, Course } from "@/components/admin/courses/CourseTable"
-import { AddCourseModal } from "@/components/admin/courses/AddCourseModal"
+import { CourseStatus, CourseLevel, Course } from "@/types/course"
 import { CourseCard } from "@/components/admin/courses/CourseCard"
+import { CourseTable } from "@/components/admin/courses/CourseTable"
+import { AddCourseModal } from "@/components/admin/courses/AddCourseModal"
+
+/* ================= TYPES ================= */
+
+export type Student = {
+  id: number
+  name: string
+  email: string
+}
+
+export type CourseWithStudents = Course & {
+  students?: Student[]
+}
+
+/* ================= PAGE ================= */
 
 export default function CoursesPage() {
   const [openAdd, setOpenAdd] = useState(false)
 
-  const [courses, setCourses] = useState<Course[]>([
+  const [courses, setCourses] = useState<CourseWithStudents[]>([
     {
       id: 1,
-      title: "Badminton",
-      description: "Badminton for adults",
+      title: "Badminton Beginner",
+      description: "Basic badminton skills",
       coach: "Coach A",
       price: 4990,
       status: "published",
+      level: "Beginner",
+      students: [
+        {
+          id: 1,
+          name: "Somchai Jaidee",
+          email: "somchai@email.com",
+        },
+        {
+          id: 2,
+          name: "Suda Dee",
+          email: "suda@email.com",
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: "Football Advanced",
+      description: "Tactical and match play",
+      coach: "Coach B",
+      price: 6500,
+      status: "draft",
+      level: "Advanced",
+      // ไม่มี students ก็ไม่พัง
     },
   ])
 
   return (
-    <div className="p-6 space-y-8">
-      {/* ===== Header เดิม ===== */}
+    <div className="p-6 space-y-10">
+      {/* ===== Header ===== */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-blue-900">
             Course Management
           </h1>
           <p className="text-sm text-gray-500">
-            Manage courses and details
+            Manage courses, students, and details
           </p>
         </div>
 
@@ -40,7 +78,7 @@ export default function CoursesPage() {
         </button>
       </div>
 
-      {/* ===== Table เดิม (ยังอยู่) ===== */}
+      {/* ===== Table View (ของเดิม) ===== */}
       <CourseTable
         courses={courses}
         onUpdate={(updated) =>
@@ -53,10 +91,10 @@ export default function CoursesPage() {
         }
       />
 
-            {/* ===== Classroom Card View (เพิ่มเข้ามา) ===== */}
+      {/* ===== Card / Classroom View ===== */}
       <div>
         <h2 className="text-lg font-semibold mb-4 text-yellow-500">
-          Classroom view
+          Classroom View
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -76,7 +114,11 @@ export default function CoursesPage() {
         onAdd={(course) =>
           setCourses((prev) => [
             ...prev,
-            { id: Date.now(), ...course },
+            {
+              id: Date.now(),
+              ...course,
+              students: [],
+            },
           ])
         }
       />
