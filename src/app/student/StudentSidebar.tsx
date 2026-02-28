@@ -1,11 +1,11 @@
 "use client"
-
+import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import {
   Home,
   BookOpen,
   CreditCard,
+  LogOut,
   CalendarCheck,
 } from "lucide-react"
 
@@ -18,6 +18,7 @@ const menu = [
 
 export default function StudentSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <aside className="w-64 bg-white border-r flex flex-col">
@@ -39,6 +40,20 @@ export default function StudentSidebar() {
           )
         })}
       </nav>
+
+      {/* Bottom */}
+      <div className="border-t p-4">
+        <button
+          onClick={() => router.push("/login")}
+          className="
+            flex items-center gap-2 text-sm w-full
+            text-red-600 hover:text-red-700
+          "
+        >
+          <LogOut className="h-4 w-4" />
+          Logout
+        </button>
+      </div>
     </aside>
   )
 }
