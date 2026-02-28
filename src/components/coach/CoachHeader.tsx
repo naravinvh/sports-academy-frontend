@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Bell } from "lucide-react"
+import { Bell, Home } from "lucide-react"
 
 export default function CoachHeader({
   title,
@@ -10,9 +10,11 @@ export default function CoachHeader({
 }) {
   return (
     <div className="flex justify-between items-center">
-      <h1 className="text-xl font-bold text-blue-900">
-        {title}
-      </h1>
+      <Home className="h-6 w-6 text-blue-700" />
+        <h1 className="text-2xl font-bold text-blue-900">
+          {title}
+        </h1>
+
 
       <Link
         href="/coach/notifications"

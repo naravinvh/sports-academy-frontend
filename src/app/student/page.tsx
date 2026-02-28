@@ -1,6 +1,7 @@
 "use client"
 
-import StudentHeader from "@/components/student/StudentHeader"
+import Link from "next/link"
+import {Home,Bell} from "lucide-react"
 import TodayClasses, {
   Attendance,
 } from "@/components/student/TodayClasses"
@@ -95,7 +96,35 @@ export default function StudentDashboard() {
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       {/* ===== GLOBAL HEADER ===== */}
-      <StudentHeader />
+      <div className="flex items-center justify-between">
+  {/* Left: Title */}
+  <div className="flex items-center gap-3">
+    <Home className="h-6 w-6 text-blue-700" />
+    <h1 className="text-2xl font-bold text-blue-900">
+      Dashboard
+    </h1>
+  </div>
+
+  {/* Right: Notification Bell */}
+  <Link
+    href="/student/notifications"
+    className="relative h-10 w-10 flex items-center justify-center
+               rounded-full hover:bg-blue-50 transition"
+  >
+    <Bell className="h-6 w-6 text-blue-700" />
+
+    {/* 🔴 Badge */}
+    <span
+      className="absolute -top-0.5 -right-0.5
+                 bg-red-500 text-white text-[10px]
+                 h-4 min-w-[16px] px-1
+                 flex items-center justify-center
+                 rounded-full"
+    >
+      3
+    </span>
+  </Link>
+</div>
 
       {/* ===== TODAY CLASSES ===== */}
 <div className="space-y-3">

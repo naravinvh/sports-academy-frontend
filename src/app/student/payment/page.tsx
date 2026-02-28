@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { CreditCard } from "lucide-react"
 
 /* ---------- TYPES ---------- */
 type PaymentStatus = "unpaid" | "verifying" | "approved"
@@ -58,10 +59,13 @@ export default function StudentPaymentPage() {
   }, [sort])
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-blue-900 ">
-        My Payments
-      </h1>
+    <div className="p-6 space-y-6">
+      <div className="flex items-center gap-3">
+        <CreditCard className="h-6 w-6 text-blue-700" />
+        <h1 className="text-2xl font-bold text-blue-900 ">
+          My Payments
+        </h1>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ================= LEFT ================= */}

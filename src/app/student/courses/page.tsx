@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import CourseGrid from "@/app/student/courses/CourseGrid"
 import { Course } from "@/app/student/courses/CourseCard"
+import { BookOpen } from "lucide-react"
 
 /* ================== MOCK DATA ================== */
 
@@ -86,7 +87,8 @@ export default function StudentCoursesPage() {
   return (
     <div className="p-6 space-y-6">
       {/* ===== Header ===== */}
-      <div className="flex justify-between items-center">
+      <div className="flex items-center gap-3">
+        <BookOpen className="h-6 w-6 text-blue-700" />
         <h1 className="text-2xl font-bold text-blue-900">
           Available Courses
         </h1>

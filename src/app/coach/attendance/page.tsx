@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { ClipboardCheck } from "lucide-react"
 
 type Student = {
   id: number
@@ -32,10 +33,14 @@ export default function CoachAttendancePage() {
   }
 
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-lg font-semibold text-blue-900">
-        Attendance Check-in
-      </h1>
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+      {/* ===== HEADER ===== */}
+      <div className="flex items-center gap-3">
+        <ClipboardCheck className="h-6 w-6 text-blue-700" />
+        <h1 className="text-2xl font-bold text-blue-900">
+          Attendance Check-in
+        </h1>
+      </div>
 
       {students.map((s) => {
         const isChecked = checkedIn.includes(s.id)

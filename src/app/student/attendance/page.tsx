@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useEffect, useState } from "react"
-
+import { CalendarCheck } from "lucide-react"
 /* ---------- TYPES ---------- */
 type AttendanceStatus = "present" | "absent"
 
@@ -63,9 +63,12 @@ export default function StudentAttendancePage() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-blue-900">
-        Attendance
-      </h1>
+      <div className="flex items-center gap-3">
+        <CalendarCheck className="h-6 w-6 text-blue-700" />
+        <h1 className="text-2xl font-bold text-blue-900">
+          Attendance
+        </h1>
+      </div>
 
 
       {/* ================= COURSE PROGRESS ================= */}

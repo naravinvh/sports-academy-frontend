@@ -1,6 +1,8 @@
 "use client"
 
-import CoachHeader from "@/components/coach/CoachHeader"
+import Link from "next/link"
+import { Bell } from "lucide-react" 
+import { Home } from "lucide-react"
 
 /* ================= TYPES ================= */
 
@@ -86,9 +88,37 @@ export default function CoachDashboard() {
   )
 
   return (
-    <div className="p-4 md:p-6 space-y-6 bg-gray-50 min-h-screen">
-      {/* ===== GLOBAL HEADER ===== */}
-      <CoachHeader title="Coach Dashboard" />
+    <div className="p-6 space-y-8 bg-gray-50">
+      {/* ===== HEADER ===== */}
+<div className="flex items-center justify-between">
+  {/* Left: Title */}
+  <div className="flex items-center gap-3">
+    <Home className="h-6 w-6 text-blue-700" />
+    <h1 className="text-2xl font-bold text-blue-900">
+      Dashboard
+    </h1>
+  </div>
+
+  {/* Right: Notification Bell */}
+  <Link
+    href="/coach/notifications"
+    className="relative h-10 w-10 flex items-center justify-center
+               rounded-full hover:bg-blue-50 transition"
+  >
+    <Bell className="h-6 w-6 text-blue-700" />
+
+    {/* 🔴 Badge */}
+    <span
+      className="absolute -top-0.5 -right-0.5
+                 bg-red-500 text-white text-[10px]
+                 h-4 min-w-[16px] px-1
+                 flex items-center justify-center
+                 rounded-full"
+    >
+      3
+    </span>
+  </Link>
+</div>
 
       {/* ===== SUMMARY (เหมือน student card) ===== */}
       <section className="bg-white rounded-xl border p-4">
