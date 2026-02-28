@@ -88,7 +88,7 @@ const handleSave = () => {
           />
 
           {/* 📅 Dates */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 text-gray-400">
             <input
               type="date"
               className="border rounded-md px-3 py-2"

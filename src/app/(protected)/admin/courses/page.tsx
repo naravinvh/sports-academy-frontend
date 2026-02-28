@@ -44,6 +44,9 @@ export default function CoursesPage() {
           email: "suda@email.com",
         },
       ],
+    startDate: "2026-01-01",
+    endDate: "2026-01-31",
+    classDays: [1, 3, 5],
     },
     {
       id: 2,
@@ -53,9 +56,14 @@ export default function CoursesPage() {
       price: 6500,
       status: "draft",
       level: "Advanced",
+      startDate: "2026-02-01",
+    endDate: "2026-02-28",
+    classDays: [2, 4, 6],
       // ไม่มี students ก็ไม่พัง
     },
-  ])
+  ],
+  
+)
 
   return (
     <div className="p-6 space-y-10">
