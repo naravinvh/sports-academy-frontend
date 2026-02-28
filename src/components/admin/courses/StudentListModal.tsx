@@ -17,10 +17,19 @@ export function StudentListModal({
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-      <div className="bg-white w-full max-w-md rounded-xl p-6 space-y-4">
+    // 👇 คลิกพื้นหลังเพื่อปิด
+    <div
+      className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* 👇 กันไม่ให้คลิกในกล่องแล้วปิด */}
+      <div
+        className="bg-white w-full max-w-md rounded-xl p-6 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
         <div className="flex justify-between items-center">
-          <h2 className="font-semibold">
+          <h2 className="font-semibold text-blue-900">
             Students in {courseTitle}
           </h2>
           <button onClick={onClose}>
@@ -28,14 +37,13 @@ export function StudentListModal({
           </button>
         </div>
 
+        {/* Content */}
         {students.length > 0 ? (
           <ul className="divide-y">
             {students.map((s) => (
               <li key={s.id} className="py-2">
-                <div className="font-medium">{s.name}</div>
-                <div className="text-sm text-gray-500">
-                  {s.email}
-                </div>
+                <div className="font-medium text-gray-900">{s.name}</div>
+                <div className="text-sm text-gray-500">{s.email}</div>
               </li>
             ))}
           </ul>
@@ -44,6 +52,16 @@ export function StudentListModal({
             No students enrolled
           </p>
         )}
+
+        {/* Footer */}
+        <div className="flex justify-end pt-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   )

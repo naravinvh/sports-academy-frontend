@@ -34,12 +34,6 @@ const attendanceHistory: Attendance[] = [
 export default function StudentAttendancePage() {
   const today = new Date().toISOString().split("T")[0]
 
-  /* ---------- TODAY CLASSES ---------- */
-  const todayClasses = attendanceHistory.filter(
-    (a) => a.date === today
-  )
-
-  const todayAttendance = todayClasses[0]
 
   /* ---------- SUMMARY PER COURSE ---------- */
   const courseSummary = useMemo(() => {
@@ -73,43 +67,6 @@ export default function StudentAttendancePage() {
         Attendance
       </h1>
 
-      {/* ================= TODAY CLASSES ================= */}
-      <div className="bg-white border rounded-2xl p-5 space-y-3">
-        <p className="font-medium flex items-center gap-2">
-          📅 Today&apos;s Classes
-        </p>
-
-        {todayClasses.length > 0 ? (
-          <div className="space-y-2">
-            {todayClasses.map((c) => (
-              <div
-                key={c.id}
-                className={`flex justify-between items-center p-3 rounded-xl
-                ${
-                  c.status === "present"
-                    ? "bg-green-50 border border-green-200"
-                    : "bg-yellow-50 border border-yellow-200"
-                }`}
-              >
-                <div>
-                  <p className="font-medium">{c.course}</p>
-                  <p className="text-sm text-gray-500">
-                    {c.time
-                      ? `⏱ ${c.time}`
-                      : "⏱ Not checked in yet"}
-                  </p>
-                </div>
-
-                <StatusPill status={c.status} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-sm text-gray-500 bg-gray-50 rounded-xl p-4 text-center">
-            No classes scheduled for today 🎉
-          </div>
-        )}
-      </div>
 
       {/* ================= COURSE PROGRESS ================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

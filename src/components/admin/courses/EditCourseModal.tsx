@@ -38,7 +38,7 @@ export function EditCourseModal({
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
       <div className="bg-white w-full max-w-md rounded-xl shadow-xl">
         {/* Header */}
-        <div className="px-6 py-4 border-b">
+        <div className="px-6 py-4 border-b ">
           <h2 className="text-lg font-semibold text-blue-900">
             Edit Course
           </h2>

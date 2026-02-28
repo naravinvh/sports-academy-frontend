@@ -45,7 +45,7 @@ export function AddCourseModal({ open, onClose, onAdd }: Props) {
         <div className="px-6 py-4 space-y-4">
           <input
             placeholder="Course title"
-            className="w-full border px-3 py-2 rounded text-gray-400"
+            className="w-full border px-3 py-2 rounded text-blue-900"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />

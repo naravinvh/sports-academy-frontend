@@ -1,6 +1,9 @@
 "use client"
 
 import StudentHeader from "@/components/student/StudentHeader"
+import TodayClasses, {
+  Attendance,
+} from "@/components/student/TodayClasses"
 
 /* ================= TYPES ================= */
 
@@ -33,6 +36,22 @@ const courses: EnrolledCourse[] = [
     attendedSessions: 4,
     startDate: "2026-02-01",
     endDate: "2026-03-01",
+  },
+]
+
+const attendanceHistory: Attendance[] = [
+  {
+    id: 9,
+    date: "2026-02-28",
+    time: "18:05",
+    course: "Badminton Beginner",
+    status: "present",
+  },
+  {
+    id: 10,
+    date: "2026-02-28",
+    course: "Swimming Technique",
+    status: "absent",
   },
 ]
 
@@ -69,13 +88,15 @@ function statusLabel(progress: number) {
     return { text: "On Track", color: "bg-blue-100 text-blue-700" }
   return { text: "Behind", color: "bg-yellow-100 text-yellow-700" }
 }
-
 /* ================= PAGE ================= */
 
 export default function StudentDashboard() {
   return (
     <div className="p-6 space-y-6">
       <StudentHeader />
+
+      {/* ⭐ TODAY CLASSES */}
+      <TodayClasses attendanceHistory={attendanceHistory} />
 
       <h2 className="text-lg font-semibold">
         My Active Courses
