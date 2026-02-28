@@ -14,7 +14,7 @@ const menu = [
   {
     label: "Dashboard",
     icon: Home,
-    href: "/coach/dashboard",
+    href: "/coach",
   },
   {
     label: "Check Attendance",
@@ -40,7 +40,7 @@ export default function CoachSidebar() {
   return (
     <aside className="w-64 bg-white border-r flex flex-col">
       {/* ===== HEADER ===== */}
-      <div className="p-6 text-xl font-bold text-emerald-700 tracking-wide">
+      <div className="p-6 text-xl font-bold text-blue-700 tracking-wide">
         COACH
       </div>
 
@@ -59,8 +59,8 @@ export default function CoachSidebar() {
                 text-sm font-medium transition
                 ${
                   active
-                    ? "bg-emerald-50 text-emerald-900"
-                    : "text-emerald-700 hover:bg-emerald-50"
+                    ? "bg-blue-50 text-blue-900"
+                    : "text-blue-700 hover:bg-blue-50"
                 }`}
             >
               <item.icon className="h-4 w-4" />

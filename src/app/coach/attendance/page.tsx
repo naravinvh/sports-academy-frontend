@@ -1,106 +1,76 @@
 "use client"
 
 import { useState } from "react"
-import CoachHeader from "@/components/coach/CoachHeader"
-
-type Course = {
-  id: number
-  name: string
-}
 
 type Student = {
   id: number
   name: string
-  credit: number
+  credits: number
 }
 
-const courses: Course[] = [
-  { id: 1, name: "Badminton Beginner - Group A" },
-  { id: 2, name: "Badminton Intermediate - Group B" },
-]
-
-const mockStudents: Student[] = [
-  { id: 1, name: "Ninee", credit: 5 },
-  { id: 2, name: "Mark", credit: 2 },
-  { id: 3, name: "Jane", credit: 0 },
+const students: Student[] = [
+  { id: 1, name: "Somchai", credits: 5 },
+  { id: 2, name: "Suda", credits: 1 },
+  { id: 3, name: "Anan", credits: 0 },
 ]
 
 export default function CoachAttendancePage() {
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
-  const [students, setStudents] = useState<Student[]>(mockStudents)
+  const [checkedIn, setCheckedIn] = useState<number[]>([])
 
-  const handleCheckIn = (id: number) => {
-    setStudents((prev) =>
-      prev.map((s) =>
-        s.id === id && s.credit > 0
-          ? { ...s, credit: s.credit - 1 }
-          : s
-      )
-    )
+  const handleCheckIn = async (student: Student) => {
+    if (student.credits <= 0) return
 
-    // 🔗 TODO: call API
-    // fetch("/api/attendance/checkin", { method: "POST", body: ... })
+    // ✅ CALL API
+    await fetch("/api/attendance/checkin", {
+      method: "POST",
+      body: JSON.stringify({
+        studentId: student.id,
+      }),
+    })
+
+    setCheckedIn((prev) => [...prev, student.id])
   }
 
   return (
-    <div className="p-4 space-y-5">
-      <CoachHeader title="Attendance Check-in" />
+    <div className="p-4 space-y-4">
+      <h1 className="text-lg font-semibold text-blue-900">
+        Attendance Check-in
+      </h1>
 
-      {/* ===== Step 1 ===== */}
-      <div>
-        <p className="font-medium mb-2">1️⃣ Select Course</p>
-        <select
-          className="w-full border rounded-xl p-3"
-          onChange={(e) =>
-            setSelectedCourse(
-              courses.find((c) => c.id === Number(e.target.value)) || null
-            )
-          }
-        >
-          <option value="">-- Select --</option>
-          {courses.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      {students.map((s) => {
+        const isChecked = checkedIn.includes(s.id)
+        const disabled = s.credits <= 0 || isChecked
 
-      {/* ===== Step 2 ===== */}
-      {selectedCourse && (
-        <div className="space-y-3">
-          <p className="font-medium">
-            2️⃣ Students ({selectedCourse.name})
-          </p>
-
-          {students.map((s) => (
-            <div
-              key={s.id}
-              className="bg-white border rounded-xl p-4 flex justify-between items-center"
-            >
-              <div>
-                <p className="font-medium">{s.name}</p>
-                <p className="text-sm text-gray-500">
-                  Credit left: {s.credit}
-                </p>
-              </div>
-
-              <button
-                disabled={s.credit === 0}
-                onClick={() => handleCheckIn(s.id)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium
-                  ${
-                    s.credit === 0
-                      ? "bg-gray-200 text-gray-400"
-                      : "bg-green-500 text-white"
-                  }`}
-              >
-                Check-in
-              </button>
+        return (
+          <div
+            key={s.id}
+            className="bg-white border rounded-xl p-4
+                       flex justify-between items-center"
+          >
+            <div>
+              <p className="font-medium">{s.name}</p>
+              <p className="text-xs text-gray-500">
+                Credits left: {s.credits}
+              </p>
             </div>
-          ))}
-        </div>
-      )}
+
+            <button
+              disabled={disabled}
+              onClick={() => handleCheckIn(s)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium
+                ${
+                  isChecked
+                    ? "bg-green-100 text-green-700"
+                    : disabled
+                    ? "bg-gray-200 text-gray-400"
+                    : "bg-blue-600 text-white"
+                }`}
+            >
+              {isChecked ? "Checked" : "Check-in"}
+            </button>
+          </div>
+        )
+      })}
     </div>
   )
 }
