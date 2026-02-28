@@ -10,6 +10,16 @@ type Props = {
   onSave: (course: Course) => void
 }
 
+const DAYS = [
+  { id: 0, label: "Sun" },
+  { id: 1, label: "Mon" },
+  { id: 2, label: "Tue" },
+  { id: 3, label: "Wed" },
+  { id: 4, label: "Thu" },
+  { id: 5, label: "Fri" },
+  { id: 6, label: "Sat" },
+]
+
 export function EditCourseModal({
   open,
   course,
@@ -22,23 +32,41 @@ export function EditCourseModal({
   const [price, setPrice] = useState(0)
   const [status, setStatus] = useState<CourseStatus>("draft")
 
+  // ✅ ฟิลด์ใหม่ (optional)
+  const [startDate, setStartDate] = useState<string | undefined>()
+  const [endDate, setEndDate] = useState<string | undefined>()
+  const [classDays, setClassDays] = useState<number[]>([])
+
   useEffect(() => {
-    if (course) {
-      setTitle(course.title)
-      setDescription(course.description)
-      setCoach(course.coach)
-      setPrice(course.price)
-      setStatus(course.status)
-    }
+    if (!course) return
+
+    setTitle(course.title)
+    setDescription(course.description)
+    setCoach(course.coach)
+    setPrice(course.price)
+    setStatus(course.status)
+
+    // 👇 fallback กัน undefined
+    setStartDate(course.startDate)
+    setEndDate(course.endDate)
+    setClassDays(course.classDays ?? [])
   }, [course])
 
   if (!open || !course) return null
 
+  const toggleDay = (day: number) => {
+    setClassDays((prev) =>
+      prev.includes(day)
+        ? prev.filter((d) => d !== day)
+        : [...prev, day]
+    )
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-xl">
+      <div className="bg-white w-full max-w-lg rounded-xl shadow-xl text-blue-600">
         {/* Header */}
-        <div className="px-6 py-4 border-b ">
+        <div className="px-6 py-4 border-b">
           <h2 className="text-lg font-semibold text-blue-900">
             Edit Course
           </h2>
@@ -66,6 +94,63 @@ export function EditCourseModal({
             onChange={(e) => setCoach(e.target.value)}
             placeholder="Coach"
           />
+
+          {/* 📅 Dates */}
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              type="date"
+              className="border rounded-md px-3 py-2"
+              value={startDate ?? ""}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            <input
+              type="date"
+              className="border rounded-md px-3 py-2"
+              value={endDate ?? ""}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+          {/* 🗓 Class Days */}
+          <div className="space-y-2">
+            <div className="text-sm font-medium text-blue-900">
+              Class Days
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "Sun", value: 0 },
+                { label: "Mon", value: 1 },
+                { label: "Tue", value: 2 },
+                { label: "Wed", value: 3 },
+                { label: "Thu", value: 4 },
+                { label: "Fri", value: 5 },
+                { label: "Sat", value: 6 },
+              ].map((d) => {
+                const active = classDays.includes(d.value)
+                return (
+                  <button
+                    type="button"
+                    key={d.value}
+                    onClick={() =>
+                      setClassDays((prev) =>
+                        active
+                          ? prev.filter((v) => v !== d.value)
+                          : [...prev, d.value]
+                      )
+                    }
+                    className={`px-3 py-1 rounded-full text-sm border
+                      ${
+                        active
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "bg-white text-gray-600"
+                      }`}
+                  >
+                    {d.label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
           <input
             type="number"
@@ -104,6 +189,11 @@ export function EditCourseModal({
                 coach,
                 price,
                 status,
+
+                // ส่งเฉพาะที่มีค่า (type-safe)
+                startDate,
+                endDate,
+                classDays,
               })
             }
             className="px-4 py-2 bg-blue-600 text-white rounded-md"

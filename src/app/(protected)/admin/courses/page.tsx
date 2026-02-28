@@ -93,8 +93,8 @@ export default function CoursesPage() {
 
       {/* ===== Card / Classroom View ===== */}
       <div>
-        <h2 className="text-lg font-semibold mb-4 text-yellow-500">
-          Classroom View
+        <h2 className="text-lg font-semibold mb-4 text-blue-600">
+          Available Courses
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

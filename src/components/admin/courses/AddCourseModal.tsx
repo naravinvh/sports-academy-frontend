@@ -12,6 +12,9 @@ type Props = {
     coach: string
     price: number
     status: CourseStatus
+    startDate: string
+    endDate: string
+    classDays: number[]
   }) => void
 }
 
@@ -21,22 +24,33 @@ export function AddCourseModal({ open, onClose, onAdd }: Props) {
   const [coach, setCoach] = useState("")
   const [price, setPrice] = useState<string>("")
   const [status, setStatus] = useState<CourseStatus>("draft")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
+  const [classDays, setClassDays] = useState<number[]>([])
 
-  const handleSave = () => {
+const handleSave = () => {
   onAdd({
     title,
     description,
     coach,
-    price: Number(price || 0), // ✅ logic อยู่ตรงนี้
+    price: Number(price || 0),
     status,
+
+    // ✅ เพิ่ม
+    startDate,
+    endDate,
+    classDays,
   })
 
   onClose()
+
+  
 }
+
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center ">
       <div className="bg-white w-full max-w-md rounded-xl shadow-xl">
         <div className="px-6 py-4 border-b font-semibold text-blue-900">
           Add Course
@@ -72,6 +86,64 @@ export function AddCourseModal({ open, onClose, onAdd }: Props) {
             onChange={(e) => setPrice(e.target.value)}
             min={0}
           />
+
+          {/* 📅 Dates */}
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              type="date"
+              className="border rounded-md px-3 py-2"
+              value={startDate ?? ""}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            <input
+              type="date"
+              className="border rounded-md px-3 py-2"
+              value={endDate ?? ""}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+
+          {/* 🗓 Class Days */}
+          <div className="space-y-2">
+            <div className="text-sm font-medium text-blue-900">
+              Class Days
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "Sun", value: 0 },
+                { label: "Mon", value: 1 },
+                { label: "Tue", value: 2 },
+                { label: "Wed", value: 3 },
+                { label: "Thu", value: 4 },
+                { label: "Fri", value: 5 },
+                { label: "Sat", value: 6 },
+              ].map((d) => {
+                const active = classDays.includes(d.value)
+                return (
+                  <button
+                    type="button"
+                    key={d.value}
+                    onClick={() =>
+                      setClassDays((prev) =>
+                        active
+                          ? prev.filter((v) => v !== d.value)
+                          : [...prev, d.value]
+                      )
+                    }
+                    className={`px-3 py-1 rounded-full text-sm border
+                      ${
+                        active
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "bg-white text-gray-600"
+                      }`}
+                  >
+                    {d.label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
           <select
             className="w-full border px-3 py-2 rounded text-gray-400"
