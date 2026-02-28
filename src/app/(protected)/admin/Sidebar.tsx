@@ -30,32 +30,17 @@ export function Sidebar() {
         ADMIN
       </div>
 
-      {/* Menu */}
       <nav className="flex-1 px-3 space-y-1">
         {menu.map((item) => {
-          const active =
-            pathname === item.href ||
-            pathname.startsWith(item.href + "/")
-
+          const active = pathname === item.href
           return (
             <Link
               key={item.label}
               href={item.href}
-              className={`
-                flex items-center gap-3 px-3 py-2 rounded-md
-                text-sm font-medium transition
-                ${
-                  active
-                    ? "bg-blue-50 text-blue-900"
-                    : "text-blue-700 hover:bg-blue-50/70"
-                }
-              `}
+              className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition
+                ${active ? "bg-blue-50 text-blue-900" : "text-blue-700 hover:bg-blue-50"}`}
             >
-              <item.icon
-                className={`h-4 w-4 ${
-                  active ? "text-blue-700" : "text-blue-500"
-                }`}
-              />
+              <item.icon className="h-4 w-4" />
               {item.label}
             </Link>
           )
