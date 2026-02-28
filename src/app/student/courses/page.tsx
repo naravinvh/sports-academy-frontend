@@ -15,6 +15,11 @@ const courses: Course[] = [
     totalSessions: 16,
     sport: "badminton",
     level: "beginner",
+
+    // ===== from admin =====
+    startDate: "2026-03-01",
+    endDate: "2026-04-26",
+    classDays: [1, 3, 5], // Mon Wed Fri
   },
   {
     id: 2,
@@ -24,6 +29,11 @@ const courses: Course[] = [
     totalSessions: 20,
     sport: "football",
     level: "advanced",
+
+    // ===== from admin =====
+    startDate: "2026-03-10",
+    endDate: "2026-05-10",
+    classDays: [2, 4], // Tue Thu
   },
   {
     id: 3,
@@ -33,6 +43,23 @@ const courses: Course[] = [
     totalSessions: 12,
     sport: "swimming",
     level: "beginner",
+    startDate: "2026-03-15",
+    endDate: "2026-04-26",
+    classDays: [0, 2, 4], // Sun Tue Thu
+  },
+]
+const myCourses: Course[] = [
+  {
+    id: 1,
+    title: "Badminton Beginner",
+    description: "Learn basic skills and footwork",
+    price: 4990,
+    totalSessions: 16,
+    sport: "badminton",
+    level: "beginner",
+    startDate: "2026-03-01",
+    endDate: "2026-04-26",
+    classDays: [1, 3, 5],
   },
 ]
 
@@ -64,6 +91,8 @@ export default function StudentCoursesPage() {
           Available Courses
         </h1>
       </div>
+
+      
 
       {/* ===== Filters ===== */}
       <div className="flex flex-col md:flex-row gap-3">

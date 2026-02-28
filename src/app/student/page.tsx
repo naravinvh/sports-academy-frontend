@@ -88,20 +88,29 @@ function statusLabel(progress: number) {
     return { text: "On Track", color: "bg-blue-100 text-blue-700" }
   return { text: "Behind", color: "bg-yellow-100 text-yellow-700" }
 }
+
 /* ================= PAGE ================= */
 
 export default function StudentDashboard() {
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+      {/* ===== GLOBAL HEADER ===== */}
       <StudentHeader />
 
-      {/* ⭐ TODAY CLASSES */}
-      <TodayClasses attendanceHistory={attendanceHistory} />
+      {/* ===== TODAY CLASSES ===== */}
+<div className="space-y-3">
+  <TodayClasses attendanceHistory={attendanceHistory} />
+</div>
 
-      <h2 className="text-lg font-semibold">
-        My Active Courses
-      </h2>
+      {/* ===== MY COURSES HEADER ===== */}
+      <div className="flex items-center gap-3">
+        <h2 className="text-lg font-semibold text-blue-900">
+          My Active Courses
+        </h2>
+        <div className="flex-1 h-px bg-gray-300" />
+      </div>
 
+      {/* ===== COURSES GRID ===== */}
       <div className="grid gap-5 md:grid-cols-2">
         {courses.map((course) => {
           const progress =
@@ -116,13 +125,13 @@ export default function StudentDashboard() {
           return (
             <div
               key={course.id}
-              className="bg-white p-5 rounded-xl border space-y-4
+              className="bg-white rounded-xl border overflow-hidden
                          transition hover:shadow-lg hover:-translate-y-0.5"
             >
-              {/* ===== Header ===== */}
-              <div className="flex justify-between items-start">
+              {/* ===== CARD HEADER ===== */}
+              <div className="bg-blue-50 px-5 py-4 flex justify-between items-start border-b">
                 <div>
-                  <div className="font-semibold text-lg">
+                  <div className="font-semibold text-lg text-blue-900">
                     {course.title}
                   </div>
                   <div className="text-xs text-gray-500">
@@ -138,45 +147,50 @@ export default function StudentDashboard() {
                 </span>
               </div>
 
-              {/* ===== Progress Info ===== */}
-              <div className="flex justify-between text-sm text-gray-600">
-                <span>
-                  {course.attendedSessions} /{" "}
-                  {course.totalSessions} sessions
-                </span>
-                <span>{remainingSessions} left</span>
-              </div>
-
-              {/* ===== Progress Bar ===== */}
-              <div className="w-full bg-gray-200 h-2 rounded overflow-hidden">
-                <div
-                  className={`h-2 transition-all duration-700 ${progressColor(
-                    progress
-                  )}`}
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-
-              {/* ===== Footer ===== */}
-              <div className="flex justify-between text-xs text-gray-500">
-                <span>
-                  ⏳ {remainingDays} days remaining
-                </span>
-
-                {course.nextClassDate && (
+              {/* ===== CARD BODY ===== */}
+              <div className="p-5 space-y-4">
+                {/* Progress Info */}
+                <div className="flex justify-between text-sm text-gray-600">
                   <span>
-                    📅 Next class:{" "}
-                    {formatDate(course.nextClassDate)}
+                    {course.attendedSessions} /{" "}
+                    {course.totalSessions} sessions
                   </span>
+                  <span>{remainingSessions} left</span>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="w-full bg-gray-200 h-2 rounded overflow-hidden">
+                  <div
+                    className={`h-2 transition-all duration-700 ${progressColor(
+                      progress
+                    )}`}
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+
+                <div className="h-px bg-gray-200" />
+
+                {/* Footer */}
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>
+                    ⏳ {remainingDays} days remaining
+                  </span>
+
+                  {course.nextClassDate && (
+                    <span>
+                      📅 Next class:{" "}
+                      {formatDate(course.nextClassDate)}
+                    </span>
+                  )}
+                </div>
+
+                {/* Warning */}
+                {remainingDays <= 7 && (
+                  <div className="text-xs text-red-700 bg-red-50 px-3 py-2 rounded">
+                    ⚠️ This course is ending soon
+                  </div>
                 )}
               </div>
-
-              {/* ===== Warning ===== */}
-              {remainingDays <= 7 && (
-                <div className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded">
-                  ⚠️ This course is ending soon
-                </div>
-              )}
             </div>
           )
         })}

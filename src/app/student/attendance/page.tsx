@@ -139,6 +139,8 @@ function CourseProgressCard({
             percent >= 80
               ? "from-green-400 to-emerald-500"
               : percent >= 50
+              ? "from-blue-400 to-blue-500"
+              : percent >= 30
               ? "from-yellow-400 to-amber-500"
               : "from-red-400 to-rose-500"
           }

@@ -68,7 +68,7 @@ export default function StudentPaymentPage() {
         <div className="lg:col-span-2 bg-white border rounded-2xl">
           {/* ---------- HEADER ---------- */}
           <div className="flex justify-between items-center p-4 border-b">
-            <p className="font-medium">Payment History</p>
+            <p className="font-medium text-blue-900">Payment History</p>
 
             <select
               value={sort}
@@ -141,7 +141,7 @@ export default function StudentPaymentPage() {
         </div>
 
         {/* ================= RIGHT ================= */}
-        <div className="space-y-4 sticky top-6">
+        <div className="space-y-4 sticky top-6 ">
           <InfoCard title="🏦 Bank Transfer">
             <p>Kasikorn Bank</p>
             <p>Sport Academy</p>
